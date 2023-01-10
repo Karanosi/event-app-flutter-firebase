@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
@@ -12,15 +13,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _counter = 0;
   int _index = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+  final user = FirebaseAuth.instance.currentUser!;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,22 +23,11 @@ class _HomeState extends State<Home> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+          children: [
+            const Text('You are in the home Page !'),
+            Text('Your email is ${user.email!}'),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -64,12 +47,21 @@ class _HomeState extends State<Home> {
             icon: Icon(Icons.account_box),
             label: 'Profile',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.logout),
+            label: 'Logout',
+          ),
         ],
         unselectedItemColor: const Color.fromARGB(255, 167, 167, 167),
         selectedItemColor: Colors.white,
         onTap: ((value) {
           setState(() {
             _index = value;
+
+            // if user clicks on the logout icon
+            if (value == 4) {
+              FirebaseAuth.instance.signOut();
+            }
           });
         }),
         currentIndex: _index,
