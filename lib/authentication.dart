@@ -15,7 +15,7 @@ class _AuthenticationState extends State<Authentication> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
           Text(
-            'Hello Again !',
+            'Hi Mi Comrad !',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 30,
@@ -26,8 +26,31 @@ class _AuthenticationState extends State<Authentication> {
             height: 20,
           ),
           TextField(
-            decoration: InputDecoration(),
-          )
+            decoration: InputDecoration(
+              icon: Icon(Icons.email),
+              hintText: 'Email',
+            ),
+          ),
+          TextField(
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
+            decoration: InputDecoration(
+              icon: Icon(Icons.password),
+              hintText: 'Password',
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+            onPressed: null,
+            child: Text('LogIn'),
+          ),
+          ElevatedButton(
+            onPressed: null,
+            child: Text('SignIn'),
+          ),
         ],
       ),
     );
