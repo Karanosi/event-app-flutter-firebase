@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final VoidCallback showRegisterPage;
+  const LoginPage({super.key, required this.showRegisterPage});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -60,6 +61,9 @@ class _LoginPageState extends State<LoginPage> {
                     height: 10,
                   ),
                   TextField(
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
                     controller: _pwdcontroller,
                     decoration: const InputDecoration(hintText: 'Password'),
                   ),
@@ -74,8 +78,8 @@ class _LoginPageState extends State<LoginPage> {
                     height: 10,
                   ),
                   ElevatedButton(
-                    onPressed: null,
-                    child: Text('Register'),
+                    onPressed: widget.showRegisterPage,
+                    child: Text('Register now '),
                   )
                 ],
               ),

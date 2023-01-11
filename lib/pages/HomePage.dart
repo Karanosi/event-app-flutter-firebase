@@ -23,6 +23,7 @@ class _HomeState extends State<Home> {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text('You are in the home Page !'),
             Text('Your email is ${user.email!}'),
