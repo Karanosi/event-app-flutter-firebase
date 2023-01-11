@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'ForgotPwdPage.dart';
+
 class LoginPage extends StatefulWidget {
   final VoidCallback showRegisterPage;
   const LoginPage({super.key, required this.showRegisterPage});
@@ -16,10 +18,31 @@ class _LoginPageState extends State<LoginPage> {
 
   // login method which is asynchronous
   Future login() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailcontroller.text,
-      password: _pwdcontroller.text,
-    );
+    try {
+      //show the loading circle
+      showDialog(
+        context: context,
+        builder: ((context) {
+          return Center(child: CircularProgressIndicator());
+        }),
+      );
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailcontroller.text,
+        password: _pwdcontroller.text,
+      );
+      // removes the loading circle after login
+      Navigator.of(context).pop();
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(
+                e.message.toString(),
+              ),
+            );
+          });
+    }
   }
 
   // this method is for memory management
@@ -68,6 +91,36 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: const InputDecoration(hintText: 'Password'),
                   ),
                   const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 25.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) {
+                                return ForgotPwdPage();
+                              }),
+                            );
+                          },
+                          child: const Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                              color: Colors.white60,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
                     height: 20,
                   ),
                   ElevatedButton(
@@ -79,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   ElevatedButton(
                     onPressed: widget.showRegisterPage,
-                    child: Text('Register now '),
+                    child: const Text('Register now '),
                   )
                 ],
               ),
