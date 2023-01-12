@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:image_picker/image_picker.dart';
 
 class RegisterPage extends StatefulWidget {
   final VoidCallback showLoginPage;
@@ -24,6 +26,9 @@ class _RegisterPageState extends State<RegisterPage> {
   final _lastNamecontroller = TextEditingController();
   final _agecontroller = TextEditingController();
   final _citycontroller = TextEditingController();
+
+  // to store the image url
+  String imageUrl = ' ';
 
   // this method is for memory management
   @override
@@ -47,6 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
       );
       // calling adduserdetails method
       addUserDetails(
+        imageUrl.toString(),
         _firstNamecontroller.text.trim(),
         _lastNamecontroller.text.trim(),
         int.parse(_agecontroller.text.trim()),
@@ -56,10 +62,11 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  Future addUserDetails(String firstName, String lastName, int age, String city,
-      String email) async {
+  Future addUserDetails(String image, String firstName, String lastName,
+      int age, String city, String email) async {
     // connect with firebase database and access the user collecion
     await FirebaseFirestore.instance.collection('users').add({
+      'image': image,
       'first name': firstName,
       'last name': lastName,
       'age': age,
@@ -76,6 +83,30 @@ class _RegisterPageState extends State<RegisterPage> {
       return true;
     }
     return false;
+  }
+
+  // method to pick and upload image
+  void pickUploadImage() async {
+    final XFile? image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+
+    // creating a reference
+    try {
+      Reference ref = FirebaseStorage.instance.ref().child('images/');
+      await ref.putFile(File(image!.path));
+      ref.getDownloadURL().then((value) {
+        print(value);
+        //refresh to display the image
+        setState(() {
+          imageUrl = value.toString();
+        });
+      });
+    } on FirebaseException catch (e) {
+      print(
+        e.toString(),
+      );
+    }
   }
 
   @override
@@ -99,6 +130,26 @@ class _RegisterPageState extends State<RegisterPage> {
                   //below is space between the text and form
                   const SizedBox(
                     height: 20,
+                  ),
+                  // image input
+                  SizedBox(
+                    width: 100.0,
+                    height: 100.0,
+                    child: GestureDetector(
+                      onTap: () {
+                        pickUploadImage();
+                      },
+                      // showing either the image ir the icon
+                      child: imageUrl == ' '
+                          ? const Icon(
+                              Icons.image_search_rounded,
+                              size: 100,
+                            )
+                          : Image.network(imageUrl),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   // first name textfirld
                   TextField(

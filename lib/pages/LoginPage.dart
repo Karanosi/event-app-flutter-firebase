@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    'Hello Again !',
+                    'Welcome !',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
@@ -78,7 +78,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   TextField(
                     controller: _emailcontroller,
-                    decoration: const InputDecoration(hintText: 'Email'),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15.0),
+                        ),
+                      ),
+                      icon: Icon(Icons.email),
+                      hintText: 'Email',
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
@@ -88,7 +96,14 @@ class _LoginPageState extends State<LoginPage> {
                     enableSuggestions: false,
                     autocorrect: false,
                     controller: _pwdcontroller,
-                    decoration: const InputDecoration(hintText: 'Password'),
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15.0),
+                          ),
+                        ),
+                        icon: Icon(Icons.password),
+                        hintText: 'Password'),
                   ),
                   const SizedBox(
                     height: 10,

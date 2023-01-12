@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class GetUserName extends StatelessWidget {
   //passing the document that i wanna read
@@ -12,20 +10,35 @@ class GetUserName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //get the collection of document
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    CollectionReference events =
+        FirebaseFirestore.instance.collection('events');
 
     return FutureBuilder<DocumentSnapshot>(
       // geting the data of the specified document
-      future: users.doc(documentID).get(),
+      future: events.doc(documentID).get(),
       builder: ((context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
-          return Text('Email:  ${data['email']}');
+          return Container(
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(15),
+              color: const Color.fromARGB(68, 124, 77, 255),
+            ),
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Text(
+                  '${data['name']}',
+                )
+              ],
+            ),
+          );
         }
         return Row(
           children: const [
-            Icon(Icons.wifi_calling),
+            Icon(Icons.view_list),
             Text(
               'Loading..',
             ),

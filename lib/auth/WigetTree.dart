@@ -15,10 +15,10 @@ class WidgetTree extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Home(title: 'Events');
+            return const Home();
           } else {
             // it ll show either the login page or the register page
-            return AuthPage();
+            return const AuthPage();
           }
         },
       ),

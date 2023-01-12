@@ -58,6 +58,7 @@
   <script type="module">
     // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+    //import { getStorage, ref } from "firebase/storage";
     // TODO: Add SDKs for Firebase products that you want to use
     // https://firebase.google.com/docs/web/setup#available-libraries
   
@@ -68,11 +69,16 @@
       projectId: "events-project-94bb8",
       storageBucket: "events-project-94bb8.appspot.com",
       messagingSenderId: "90719112087",
-      appId: "1:90719112087:web:29459e3c59b353f84952d2"
+      appId: "1:90719112087:web:29459e3c59b353f84952d2",
+      // this is added for web and firebase storage connection
+      //storageBucket: 'gs://events-project-94bb8.appspot.com'
     };
+    
   
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
+    /*const storage = getStorage(app);
+    const storageRef = ref(storage);*/
   </script>
 </body>
 </html>
